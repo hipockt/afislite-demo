@@ -1,19 +1,215 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>Fingerprint Comparison Demo</title>
+
 <style>
-:root{color-scheme:dark}body{font:15px system-ui,Arial,sans-serif;background:#111820;color:#f3f5f8;margin:0}header,.layout,footer{max-width:1250px;margin:auto;padding:15px}h1{font-size:24px;margin:0 0 5px}p{color:#c7d1da;margin:6px 0 12px}.layout{display:grid;grid-template-columns:300px 1fr;gap:16px}aside{background:#202b36;border-radius:8px;padding:16px;align-self:start}fieldset{border:1px solid #486071;border-radius:7px;margin:0 0 14px;padding:10px}legend{color:#d9e8f1;font-weight:bold}label{display:block;margin:9px 0}input[type=file]{width:100%}input[type=range]{width:100%}button{background:#286d9c;color:white;border:0;padding:8px 10px;border-radius:5px;cursor:pointer;margin:3px}button:hover{background:#3588bd}button:disabled{opacity:.45;cursor:default}button.active{background:#ae6332}output{font-variant-numeric:tabular-nums}.row{display:flex;align-items:center;justify-content:space-between;gap:8px}.row input[type=range]{flex:1}.canvas-wrap{background:#d3d8df;border-radius:6px;overflow:auto;min-height:540px;display:flex;justify-content:center;align-items:flex-start}canvas{background:white;max-width:100%;height:auto;display:block;touch-action:none;cursor:grab}canvas.dragging{cursor:grabbing}.hint{font-size:13px;color:#c4d3df}footer{font-size:13px;color:#adbbc7}@media(max-width:820px){.layout{grid-template-columns:1fr}.canvas-wrap{min-height:350px}}
+:root{color-scheme:dark}
+
+body{
+font:15px system-ui,Arial,sans-serif;
+background:#111820;
+color:#f3f5f8;
+margin:0
+}
+
+header,.layout,footer{
+max-width:1250px;
+margin:auto;
+padding:15px
+}
+
+h1{
+font-size:24px;
+margin:0 0 5px
+}
+
+p{
+color:#c7d1da;
+margin:6px 0 12px
+}
+
+.layout{
+display:grid;
+grid-template-columns:300px 1fr;
+gap:16px
+}
+
+aside{
+background:#202b36;
+border-radius:8px;
+padding:16px;
+align-self:start
+}
+
+fieldset{
+border:1px solid #486071;
+border-radius:7px;
+margin:0 0 14px;
+padding:10px
+}
+
+legend{
+color:#d9e8f1;
+font-weight:bold
+}
+
+label{
+display:block;
+margin:9px 0
+}
+
+input[type=file]{
+width:100%
+}
+
+input[type=range]{
+width:100%
+}
+
+button{
+background:#286d9c;
+color:white;
+border:0;
+padding:8px 10px;
+border-radius:5px;
+cursor:pointer;
+margin:3px
+}
+
+button:hover{
+background:#3588bd
+}
+
+button:disabled{
+opacity:.45;
+cursor:default
+}
+
+button.active{
+background:#ae6332
+}
+
+output{
+font-variant-numeric:tabular-nums
+}
+
+.row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:8px
+}
+
+.row input[type=range]{
+flex:1
+}
+
+.canvas-wrap{
+background:#d3d8df;
+border-radius:6px;
+overflow:auto;
+min-height:540px;
+display:flex;
+justify-content:center;
+align-items:flex-start
+}
+
+canvas{
+background:white;
+max-width:100%;
+height:auto;
+display:block;
+touch-action:none;
+cursor:grab
+}
+
+canvas.dragging{
+cursor:grabbing
+}
+
+.hint{
+font-size:13px;
+color:#c4d3df
+}
+
+footer{
+font-size:13px;
+color:#adbbc7
+}
+
+@media(max-width:820px){
+.layout{
+grid-template-columns:1fr
+}
+
+.canvas-wrap{
+min-height:350px
+}
+}
+
 
 /* AFISLITE startup splash */
-#afisSplash{position:fixed;inset:0;z-index:9999;background:#0b1118;display:flex;align-items:center;justify-content:center;opacity:1;visibility:visible;transition:opacity .7s ease,visibility .7s ease}
-#afisSplash.hide{opacity:0;visibility:hidden;pointer-events:none}
-#afisSplash .splash-card{position:relative;width:min(620px,84vw);aspect-ratio:2/1;background:#fff url("AFISLITE_splash.png") center center / 100% 100% no-repeat;box-shadow:0 18px 60px rgba(0,0,0,.55);overflow:hidden;border-radius:2px}
-#afisSplash .brand{position:absolute;left:7.8%;top:34%;color:#1a4f82;text-shadow:0 1px 0 rgba(255,255,255,.7)}
-#afisSplash .brand-title{font:700 clamp(28px,4.8vw,46px)/1.05 Arial,Helvetica,sans-serif;letter-spacing:.5px}
-#afisSplash .brand-subtitle{margin-top:7px;font:400 clamp(13px,2vw,18px)/1.15 Arial,Helvetica,sans-serif;color:#3f76a4}
-#afisSplash .copyright{position:absolute;left:7%;bottom:5.2%;font:400 clamp(9px,1.3vw,12px)/1.2 Arial,Helvetica,sans-serif;color:#3f76a4}
+
+#afisSplash{
+position:fixed;
+inset:0;
+z-index:9999;
+background:#0b1118;
+display:flex;
+align-items:center;
+justify-content:center;
+opacity:1;
+visibility:visible;
+transition:opacity .7s ease,visibility .7s ease
+}
+
+#afisSplash.hide{
+opacity:0;
+visibility:hidden;
+pointer-events:none
+}
+
+#afisSplash .splash-card{
+position:relative;
+width:min(620px,84vw);
+aspect-ratio:2/1;
+background:#fff url("AFISLITE_splash.png") center center / 100% 100% no-repeat;
+box-shadow:0 18px 60px rgba(0,0,0,.55);
+overflow:hidden;
+border-radius:2px
+}
+
+#afisSplash .brand{
+position:absolute;
+left:7.8%;
+top:34%;
+color:#1a4f82;
+text-shadow:0 1px 0 rgba(255,255,255,.7)
+}
+
+#afisSplash .brand-title{
+font:700 clamp(28px,4.8vw,46px)/1.05 Arial,Helvetica,sans-serif;
+letter-spacing:.5px
+}
+
+#afisSplash .brand-subtitle{
+margin-top:7px;
+font:400 clamp(13px,2vw,18px)/1.15 Arial,Helvetica,sans-serif;
+color:#3f76a4
+}
+
+#afisSplash .copyright{
+position:absolute;
+left:7%;
+bottom:5.2%;
+font:400 clamp(9px,1.3vw,12px)/1.2 Arial,Helvetica,sans-serif;
+color:#3f76a4
+}
+
 </style>
 </head>
 
@@ -21,590 +217,976 @@
 
 <div id="afisSplash" role="dialog" aria-label="AFISLITE startup splash">
   <div class="splash-card">
+
     <div class="brand">
       <div class="brand-title">AFISLITE</div>
       <div class="brand-subtitle">Fingerprint Identification System</div>
     </div>
-    <div class="copyright">Copyright © 2026 Norman Greenwood. All rights reserved.</div>
+
+    <div class="copyright">
+      Copyright © 2026 Norman Greenwood. All rights reserved.
+    </div>
+
   </div>
 </div>
+
 
 <header>
-  <h1>Fingerprint Comparison Demo</h1>
-  <p>Load two images, align Print B to Print A, then fade or blink to compare their ridges.</p>
+
+<h1>Fingerprint Comparison Demo</h1>
+
+<p>
+Load two images, align Print B to Print A, then fade or blink to compare their ridges.
+</p>
+
 </header>
 
+
 <div class="layout">
-  <aside>
 
-    <fieldset>
-      <legend>Prints</legend>
+<aside>
 
-      <label>
-        Print A (base)
-        <input type="file" id="fileA" accept="image/*">
-      </label>
 
-      <label>
-        Print B (move and rotate)
-        <input type="file" id="fileB" accept="image/*">
-      </label>
+<fieldset>
 
-      <button id="fit">Fit B to A</button>
-      <button id="reset">Reset B</button>
-    </fieldset>
+<legend>Prints</legend>
 
-    <fieldset>
-      <legend>Compare</legend>
+<label>
+Print A (base)
+<input type="file" id="fileA" accept="image/*">
+</label>
 
-      <label>
-        Print B opacity
-        <output id="alphaValue">50%</output>
-        <input id="alpha" type="range" min="0" max="100" value="50">
-      </label>
+<label>
+Print B (move and rotate)
+<input type="file" id="fileB" accept="image/*">
+</label>
 
-      <button id="blink">Start blink</button>
-      <button id="holdA">Hold A</button>
-      <button id="holdB">Hold B</button>
+<button id="fit">Fit B to A</button>
 
-      <label>
-        Rotation
-        <output id="rotateValue">0.0°</output>
-        <input id="rotate" type="range" min="-180" max="180" step="0.1" value="0">
-      </label>
+<button id="reset">Reset B</button>
 
-      <label>
-        Scale
-        <output id="scaleValue">100%</output>
-        <input id="scale" type="range" min="10" max="400" step="0.1" value="100">
-      </label>
-    </fieldset>
+</fieldset>
 
-    <fieldset>
-      <legend>Fine alignment</legend>
 
-      <div>
-        <button data-nudge="0,-1">↑</button>
-        <button data-nudge="-1,0">←</button>
-        <button data-nudge="1,0">→</button>
-        <button data-nudge="0,1">↓</button>
-      </div>
+<fieldset>
 
-      <p class="hint">
-        Nudge is one image pixel per click. Drag on the image to move B.
-        Shift + arrow keys also nudge B.
-      </p>
-    </fieldset>
+<legend>Compare</legend>
 
-    <p class="hint" id="status">Loading AFISLITE sample prints...</p>
+<label>
 
-  </aside>
+Print B opacity
 
-  <div class="canvas-wrap">
-    <canvas id="view" width="850" height="1100" aria-label="Fingerprint overlay comparison"></canvas>
-  </div>
+<output id="alphaValue">
+50%
+</output>
+
+<input
+id="alpha"
+type="range"
+min="0"
+max="100"
+value="50">
+
+</label>
+
+
+<button id="blink">
+Start blink
+</button>
+
+<button id="holdA">
+Hold A
+</button>
+
+<button id="holdB">
+Hold B
+</button>
+
+
+<label>
+
+Rotation
+
+<output id="rotateValue">
+0.0°
+</output>
+
+<input
+id="rotate"
+type="range"
+min="-180"
+max="180"
+step="0.1"
+value="0">
+
+</label>
+
+
+<label>
+
+Scale
+
+<output id="scaleValue">
+100%
+</output>
+
+<input
+id="scale"
+type="range"
+min="10"
+max="400"
+step="0.1"
+value="100">
+
+</label>
+
+</fieldset>
+
+
+<fieldset>
+
+<legend>
+Fine alignment
+</legend>
+
+<div>
+
+<button data-nudge="0,-1">
+↑
+</button>
+
+<button data-nudge="-1,0">
+←
+</button>
+
+<button data-nudge="1,0">
+→
+</button>
+
+<button data-nudge="0,1">
+↓
+</button>
+
 </div>
 
+<p class="hint">
+
+Nudge is one image pixel per click.
+
+Drag on the image to move B.
+
+Shift + arrow keys also nudge B.
+
+</p>
+
+</fieldset>
+
+
+<p class="hint" id="status">
+Loading AFISLITE sample prints...
+</p>
+
+
+</aside>
+
+
+<div class="canvas-wrap">
+
+<canvas
+id="view"
+width="850"
+height="1100"
+aria-label="Fingerprint overlay comparison">
+</canvas>
+
+</div>
+
+</div>
+
+
 <footer>
-Standalone offline demonstration. Images are read locally in your browser; nothing is uploaded or saved.
+
+AFISLITE online fingerprint comparison demonstration.
+The demonstration prints are loaded from this website.
+If you choose your own images, they are read locally in your browser and are not uploaded or saved.
 Visual alignment does not establish fingerprint identity.
+
 </footer>
 
+
 <script>
+
 (() => {
 
 'use strict';
 
-const splash = document.getElementById('afisSplash');
+
+const splash =
+document.getElementById('afisSplash');
+
 
 window.setTimeout(
-  () => splash && splash.classList.add('hide'),
-  2800
+() => splash && splash.classList.add('hide'),
+2800
 );
 
-const $ = id => document.getElementById(id);
 
-const canvas = $('view');
-const ctx = canvas.getContext('2d');
+const $ =
+id => document.getElementById(id);
+
+
+const canvas =
+$('view');
+
+
+const ctx =
+canvas.getContext('2d');
+
 
 const state = {
-  A: null,
-  B: null,
-  x: 0,
-  y: 0,
-  rotation: 0,
-  scale: 1,
-  alpha: .5,
-  timer: null,
-  phase: false,
-  drag: null
+
+A:null,
+B:null,
+
+x:0,
+y:0,
+
+rotation:0,
+scale:1,
+
+alpha:.5,
+
+timer:null,
+phase:false,
+
+drag:null
+
 };
 
-function status(message) {
-  $('status').textContent = message;
-}
 
-function stopBlink() {
-  if (state.timer) {
-    clearInterval(state.timer);
-  }
+function status(message){
 
-  state.timer = null;
-  state.phase = false;
+$('status').textContent =
+message;
 
-  $('blink').textContent = 'Start blink';
-  $('blink').classList.remove('active');
-}
-
-function draw() {
-
-  const w = canvas.width;
-  const h = canvas.height;
-
-  ctx.fillStyle = 'white';
-  ctx.fillRect(0, 0, w, h);
-
-  if (state.A) {
-    ctx.drawImage(state.A, 0, 0, w, h);
-  }
-
-  if (state.B) {
-
-    ctx.save();
-
-    ctx.globalAlpha =
-      state.timer
-        ? (state.phase ? 1 : 0)
-        : state.alpha;
-
-    ctx.translate(state.x, state.y);
-
-    ctx.rotate(
-      state.rotation * Math.PI / 180
-    );
-
-    ctx.scale(
-      state.scale,
-      state.scale
-    );
-
-    ctx.drawImage(
-      state.B,
-      -state.B.width / 2,
-      -state.B.height / 2
-    );
-
-    ctx.restore();
-  }
-
-  if (!state.A) {
-
-    ctx.fillStyle = '#344455';
-    ctx.font = '22px system-ui';
-    ctx.textAlign = 'center';
-
-    ctx.fillText(
-      'Loading demonstration prints...',
-      w / 2,
-      h / 2
-    );
-  }
-}
-
-function resizeToA() {
-
-  if (!state.A) return;
-
-  canvas.width = state.A.width;
-  canvas.height = state.A.height;
-}
-
-function fit() {
-
-  if (!state.A || !state.B) return;
-
-  state.x = canvas.width / 2;
-  state.y = canvas.height / 2;
-
-  state.rotation = 0;
-
-  state.scale = Math.min(
-    canvas.width / state.B.width,
-    canvas.height / state.B.height
-  );
-
-  sync();
-  draw();
-}
-
-function sync() {
-
-  $('rotate').value = state.rotation;
-  $('scale').value = state.scale * 100;
-
-  $('rotateValue').textContent =
-    state.rotation.toFixed(1) + '°';
-
-  $('scaleValue').textContent =
-    (state.scale * 100).toFixed(1) + '%';
-
-  $('alpha').value =
-    Math.round(state.alpha * 100);
-
-  $('alphaValue').textContent =
-    Math.round(state.alpha * 100) + '%';
 }
 
 
-/* Load a print chosen from the user's computer */
+function stopBlink(){
 
-function load(id, key) {
+if(state.timer){
 
-  const file = $(id).files[0];
+clearInterval(
+state.timer
+);
 
-  if (!file) return;
+}
 
-  if (!file.type.startsWith('image/')) {
+state.timer=null;
+state.phase=false;
 
-    status('Select an image file.');
-    return;
-  }
+$('blink').textContent=
+'Start blink';
 
-  const url = URL.createObjectURL(file);
+$('blink')
+.classList
+.remove('active');
 
-  const image = new Image();
-
-  image.onload = () => {
-
-    URL.revokeObjectURL(url);
-
-    state[key] = image;
-
-    if (key === 'A') {
-      resizeToA();
-    }
-
-    if (state.A && state.B) {
-      fit();
-    }
-
-    draw();
-
-    status(
-      state.A && state.B
-        ? 'Loaded. Drag Print B over Print A, then fade or blink.'
-        : 'Load the other print to compare.'
-    );
-  };
-
-  image.onerror = () => {
-
-    URL.revokeObjectURL(url);
-
-    status(
-      'Could not open that image.'
-    );
-  };
-
-  image.src = url;
 }
 
 
-/* Load the two demonstration prints directly from GitHub */
+function draw(){
 
-function loadSample(path, key) {
+const w=
+canvas.width;
 
-  const image = new Image();
+const h=
+canvas.height;
 
-  return new Promise(
-    (resolve, reject) => {
 
-      image.onload = () => {
+ctx.fillStyle=
+'white';
 
-        state[key] = image;
+ctx.fillRect(
+0,
+0,
+w,
+h
+);
 
-        if (key === 'A') {
-          resizeToA();
-        }
 
-        resolve();
-      };
+if(state.A){
 
-      image.onerror = reject;
+ctx.drawImage(
+state.A,
+0,
+0,
+w,
+h
+);
 
-      image.src = path;
-    }
-  );
+}
+
+
+if(state.B){
+
+ctx.save();
+
+
+ctx.globalAlpha=
+
+state.timer
+
+? (
+state.phase
+? 1
+: 0
+)
+
+: state.alpha;
+
+
+ctx.translate(
+state.x,
+state.y
+);
+
+
+ctx.rotate(
+state.rotation
+*
+Math.PI
+/
+180
+);
+
+
+ctx.scale(
+state.scale,
+state.scale
+);
+
+
+ctx.drawImage(
+state.B,
+-state.B.width/2,
+-state.B.height/2
+);
+
+
+ctx.restore();
+
+}
+
+
+if(!state.A){
+
+ctx.fillStyle=
+'#344455';
+
+ctx.font=
+'22px system-ui';
+
+ctx.textAlign=
+'center';
+
+ctx.fillText(
+'Loading demonstration prints...',
+w/2,
+h/2
+);
+
+}
+
+}
+
+
+function resizeToA(){
+
+if(!state.A){
+return;
+}
+
+canvas.width=
+state.A.width;
+
+canvas.height=
+state.A.height;
+
+}
+
+
+function fit(){
+
+if(
+!state.A
+||
+!state.B
+){
+return;
+}
+
+
+state.x=
+canvas.width/2;
+
+state.y=
+canvas.height/2;
+
+state.rotation=
+0;
+
+
+state.scale=
+
+Math.min(
+
+canvas.width
+/
+state.B.width,
+
+canvas.height
+/
+state.B.height
+
+);
+
+
+sync();
+
+draw();
+
+}
+
+
+function sync(){
+
+$('rotate').value=
+state.rotation;
+
+$('scale').value=
+state.scale*100;
+
+
+$('rotateValue').textContent=
+state.rotation.toFixed(1)+'°';
+
+
+$('scaleValue').textContent=
+(state.scale*100).toFixed(1)+'%';
+
+
+$('alpha').value=
+Math.round(state.alpha*100);
+
+
+$('alphaValue').textContent=
+Math.round(state.alpha*100)+'%';
+
+}
+
+
+/* Load user-selected image */
+
+function load(id,key){
+
+const file=
+$(id).files[0];
+
+
+if(!file){
+return;
+}
+
+
+if(!file.type.startsWith('image/')){
+
+status(
+'Select an image file.'
+);
+
+return;
+
+}
+
+
+const url=
+URL.createObjectURL(file);
+
+
+const image=
+new Image();
+
+
+image.onload=()=>{
+
+URL.revokeObjectURL(url);
+
+state[key]=image;
+
+
+if(key==='A'){
+
+resizeToA();
+
+}
+
+
+if(
+state.A
+&&
+state.B
+){
+
+fit();
+
+}
+
+
+draw();
+
+
+status(
+
+state.A&&state.B
+
+? 'Loaded. Drag Print B over Print A, then fade or blink.'
+
+: 'Load the other print to compare.'
+
+);
+
+};
+
+
+image.onerror=()=>{
+
+URL.revokeObjectURL(url);
+
+status(
+'Could not open that image.'
+);
+
+};
+
+
+image.src=url;
+
+}
+
+
+/* Load AFISLITE demonstration prints from GitHub Pages */
+
+function loadSample(path,key){
+
+const image=
+new Image();
+
+
+return new Promise(
+(resolve,reject)=>{
+
+
+image.onload=()=>{
+
+state[key]=image;
+
+
+if(key==='A'){
+
+resizeToA();
+
+}
+
+
+resolve();
+
+};
+
+
+image.onerror=
+reject;
+
+
+image.src=
+path;
+
+});
+
 }
 
 
 Promise.all([
 
-  loadSample(
-    'LL_001.png',
-    'A'
-  ),
+loadSample(
+'LL_001.png',
+'A'
+),
 
-  loadSample(
-    'LL_001_latent.png',
-    'B'
-  )
+loadSample(
+'LL_001_latent.png',
+'B'
+)
 
 ])
-.then(() => {
 
-  fit();
-  draw();
+.then(()=>{
 
-  status(
-    'Sample prints loaded from GitHub. Drag Print B over Print A, then fade or blink.'
-  );
+fit();
+
+draw();
+
+
+status(
+'Sample prints loaded. Drag Print B over Print A, then fade or blink.'
+);
 
 })
-.catch(() => {
 
-  draw();
+.catch(()=>{
 
-  status(
-    'Could not load the demonstration fingerprints.'
-  );
+draw();
+
+
+status(
+'Could not load the demonstration fingerprints.'
+);
 
 });
 
 
-$('fileA').onchange =
-  () => load('fileA', 'A');
-
-$('fileB').onchange =
-  () => load('fileB', 'B');
+$('fileA').onchange=
+()=>load('fileA','A');
 
 
-$('fit').onclick = fit;
+$('fileB').onchange=
+()=>load('fileB','B');
 
 
-$('reset').onclick = () => {
+$('fit').onclick=
+fit;
 
-  if (!state.B) return;
 
-  state.x = canvas.width / 2;
-  state.y = canvas.height / 2;
+$('reset').onclick=()=>{
 
-  state.rotation = 0;
-  state.scale = 1;
+if(!state.B){
+return;
+}
 
-  sync();
-  draw();
+
+state.x=
+canvas.width/2;
+
+state.y=
+canvas.height/2;
+
+state.rotation=
+0;
+
+state.scale=
+1;
+
+
+sync();
+
+draw();
+
 };
 
 
-$('alpha').oninput = () => {
+$('alpha').oninput=()=>{
 
-  stopBlink();
+stopBlink();
 
-  state.alpha =
-    +$('alpha').value / 100;
 
-  sync();
-  draw();
+state.alpha=
++$('alpha').value/100;
+
+
+sync();
+
+draw();
+
 };
 
 
-$('rotate').oninput = () => {
+$('rotate').oninput=()=>{
 
-  state.rotation =
-    +$('rotate').value;
+state.rotation=
++$('rotate').value;
 
-  sync();
-  draw();
+
+sync();
+
+draw();
+
 };
 
 
-$('scale').oninput = () => {
+$('scale').oninput=()=>{
 
-  state.scale =
-    +$('scale').value / 100;
+state.scale=
++$('scale').value/100;
 
-  sync();
-  draw();
+
+sync();
+
+draw();
+
 };
 
 
-$('blink').onclick = () => {
+$('blink').onclick=()=>{
 
-  if (state.timer) {
+if(state.timer){
 
-    stopBlink();
-    draw();
-    return;
-  }
+stopBlink();
 
-  if (!state.A || !state.B) {
+draw();
 
-    status(
-      'Load both prints first.'
-    );
+return;
 
-    return;
-  }
+}
 
-  state.phase = false;
 
-  state.timer = setInterval(
-    () => {
+if(
+!state.A
+||
+!state.B
+){
 
-      state.phase = !state.phase;
+status(
+'Load both prints first.'
+);
 
-      draw();
+return;
 
-    },
-    650
-  );
+}
 
-  $('blink').textContent =
-    'Stop blink';
 
-  $('blink')
-    .classList
-    .add('active');
+state.phase=
+false;
 
-  draw();
+
+state.timer=
+setInterval(
+()=>{
+
+state.phase=
+!state.phase;
+
+draw();
+
+},
+650
+);
+
+
+$('blink').textContent=
+'Stop blink';
+
+
+$('blink')
+.classList
+.add('active');
+
+
+draw();
+
 };
 
 
-$('holdA').onclick = () => {
+$('holdA').onclick=()=>{
 
-  stopBlink();
+stopBlink();
 
-  state.alpha = 0;
+state.alpha=
+0;
 
-  sync();
-  draw();
+sync();
+
+draw();
+
 };
 
 
-$('holdB').onclick = () => {
+$('holdB').onclick=()=>{
 
-  stopBlink();
+stopBlink();
 
-  state.alpha = 1;
+state.alpha=
+1;
 
-  sync();
-  draw();
+sync();
+
+draw();
+
 };
 
 
 document
 .querySelectorAll('[data-nudge]')
-.forEach(button => {
+.forEach(
+button=>{
 
-  button.onclick = () => {
+button.onclick=()=>{
 
-    const [x, y] =
-      button.dataset.nudge
-      .split(',')
-      .map(Number);
+const [x,y]=
 
-    state.x += x;
-    state.y += y;
+button
+.dataset
+.nudge
+.split(',')
+.map(Number);
 
-    draw();
-  };
+
+state.x+=x;
+
+state.y+=y;
+
+
+draw();
+
+};
+
 });
 
 
 document.addEventListener(
-  'keydown',
-  event => {
+'keydown',
+event=>{
 
-    if (
-      !event.shiftKey ||
-      !state.B ||
-      ![
-        'ArrowLeft',
-        'ArrowRight',
-        'ArrowUp',
-        'ArrowDown'
-      ].includes(event.key)
-    ) {
-      return;
-    }
+if(
+!event.shiftKey
+||
+!state.B
+||
+![
+'ArrowLeft',
+'ArrowRight',
+'ArrowUp',
+'ArrowDown'
+].includes(event.key)
+){
 
-    event.preventDefault();
+return;
 
-    const direction = {
+}
 
-      ArrowLeft: [-1, 0],
-      ArrowRight: [1, 0],
-      ArrowUp: [0, -1],
-      ArrowDown: [0, 1]
 
-    }[event.key];
+event.preventDefault();
 
-    state.x += direction[0];
-    state.y += direction[1];
 
-    draw();
-  }
+const direction={
+
+ArrowLeft:[-1,0],
+ArrowRight:[1,0],
+ArrowUp:[0,-1],
+ArrowDown:[0,1]
+
+}[event.key];
+
+
+state.x+=
+direction[0];
+
+
+state.y+=
+direction[1];
+
+
+draw();
+
+});
+
+
+canvas.onpointerdown=
+event=>{
+
+if(!state.B){
+return;
+}
+
+
+canvas.setPointerCapture(
+event.pointerId
 );
 
 
-canvas.onpointerdown = event => {
+state.drag={
 
-  if (!state.B) return;
+px:event.clientX,
+py:event.clientY
 
-  canvas.setPointerCapture(
-    event.pointerId
-  );
-
-  state.drag = {
-    px: event.clientX,
-    py: event.clientY
-  };
-
-  canvas.classList.add(
-    'dragging'
-  );
 };
 
 
-canvas.onpointermove = event => {
+canvas
+.classList
+.add('dragging');
 
-  if (!state.drag) return;
-
-  const rect =
-    canvas.getBoundingClientRect();
-
-  state.x +=
-    (event.clientX - state.drag.px)
-    * canvas.width
-    / rect.width;
-
-  state.y +=
-    (event.clientY - state.drag.py)
-    * canvas.height
-    / rect.height;
-
-  state.drag = {
-    px: event.clientX,
-    py: event.clientY
-  };
-
-  draw();
 };
 
 
-canvas.onpointerup =
-canvas.onpointercancel = () => {
+canvas.onpointermove=
+event=>{
 
-  state.drag = null;
+if(!state.drag){
+return;
+}
 
-  canvas.classList.remove(
-    'dragging'
-  );
+
+const rect=
+canvas.getBoundingClientRect();
+
+
+state.x+=
+
+(event.clientX-state.drag.px)
+*
+canvas.width
+/
+rect.width;
+
+
+state.y+=
+
+(event.clientY-state.drag.py)
+*
+canvas.height
+/
+rect.height;
+
+
+state.drag={
+
+px:event.clientX,
+py:event.clientY
+
 };
 
 
 draw();
+
+};
+
+
+canvas.onpointerup=
+canvas.onpointercancel=
+()=>{
+
+state.drag=null;
+
+
+canvas
+.classList
+.remove('dragging');
+
+};
+
+
+draw();
+
 
 })();
 
